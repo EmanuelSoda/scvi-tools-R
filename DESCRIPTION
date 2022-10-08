@@ -16,9 +16,12 @@ RoxygenNote: 7.2.1
 Imports: 
     devtools,
     magrittr,
+    memoise,
     reticulate,
     sceasy,
     Seurat,
     utils
 Remotes: 
     cellgeni/sceasy
+Depends: 
+    R (>= 2.10)

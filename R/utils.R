@@ -1,9 +1,8 @@
-#' @importFrom reticulate py_discover_config
 #' @importFrom memoise memoise
-.onLoad <- function(libname, pkgname) {
-    pyload_scvi <<- memoise::memoise(load_scvi)
-    pyload_sc <<- memoise::memoise(load_sc)
-    checl_sceasy <<- memoise::memoise(load_sc)
+.onAttach <- function(libname, pkgname) {
+    scvi <<- memoise::memoise(load_scvi)
+    sc <<- memoise::memoise(load_sc)
+    #sceasy <<- memoise::memoise(load_sceasy)
 }
 
 
@@ -21,6 +20,7 @@ load_sceasy <- function() {
 }
 
 #' Load scvi-tools Python Package
+#' @importFrom reticulate py_discover_config import
 load_scvi <- function() {
     py_config <- try(
         reticulate::py_discover_config(required_module = "scvi")
@@ -34,13 +34,14 @@ load_scvi <- function() {
         reticulate::import("scvi", delay_load = delay_load)
     ) #delay_load = delay_load
 
-    scvi
+    return(scvi)
 }
 
 
 #' Check that the current scvi-tools version in Python is up to date.
 #'
 #' @importFrom utils packageVersion
+#' @importFrom reticulate py_config
 #' @export
 check_pyscvi_version <- function() {
     pyversion <- strsplit(scvi()$`__version__`, '\\.')[[1]]
@@ -85,6 +86,7 @@ check_pyscvi_version <- function() {
 #' @param pip Install from pip, if possible.
 #' @param ... Additional arguments passed to conda_install() or
 #' virtualenv_install().
+#' @importFrom reticulate py_install
 #'
 #' @export
 install_scvi <- function(envname = "r-reticulate", method = "auto",
@@ -125,7 +127,7 @@ load_sc <- function() {
         reticulate::import("scanpy", delay_load = delay_load)
     ) #delay_load = delay_load
 
-    sc
+    return(sc)
 }
 
 
